@@ -153,8 +153,23 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="end">
+            android:orientation="horizontal">
+
+            <!-- Delete Button (only visible in edit mode) -->
+            <Button
+                android:id="@+id/btnDelete"
+                style="@style/Widget.Material3.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="삭제"
+                android:textColor="@android:color/holo_red_dark"
+                android:visibility="gone" />
+
+            <!-- Spacer to push buttons to the right -->
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1" />
 
             <!-- Cancel Button -->
             <Button

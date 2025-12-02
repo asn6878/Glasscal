@@ -80,10 +80,14 @@ app/src/main/java/com/example/glasscal/
 │   └── repository/        # Repository 패턴
 ├── ui/
 │   ├── calendar/          # 캘린더 화면
-│   ├── task/              # 할일 등록/수정 화면
+│   ├── task/              # 할일 등록/수정/목록 화면
+│   │   ├── AddTaskBottomSheet.kt      # 할일 추가/수정
+│   │   └── TaskListBottomSheet.kt     # 할일 목록 표시
 │   ├── auth/              # 로그인 화면
 │   ├── settings/          # 설정 화면
-│   └── common/            # 공통 UI 컴포넌트
+│   └── adapter/           # RecyclerView Adapters
+│       ├── CalendarAdapter.kt         # 캘린더 그리드
+│       └── TaskListAdapter.kt         # 할일 목록
 ├── viewmodel/             # ViewModel 클래스
 ├── util/                  # 유틸리티 클래스
 └── MainActivity.kt
@@ -167,10 +171,12 @@ data class Task(
   - [x] 이미지 선택 (Gallery)
   - [x] 데이터 저장
 - [x] 할일 수정/삭제 기능
-  - [x] 셀 클릭 시 상세보기
-  - [x] 수정/삭제 UI
+  - [x] 셀 클릭 시 할일 목록 표시
+  - [x] 할일 목록에서 수정/삭제
+  - [x] 수정 모드에서 삭제 버튼
 - [x] 할일 목록 조회
   - [x] 날짜별 필터링
+  - [x] TaskListBottomSheet로 목록 표시
   - [x] LiveData/Flow 연동
 
 ### Phase 5: UI 폴리싱 ✅ 완료
@@ -197,9 +203,61 @@ data class Task(
 - [x] Fragment 간 이동 구현
 - [x] FAB 메뉴 기능 구현
 
-## 최근 변경 사항 (2025-12-02)
+## 최근 변경 사항
 
-### 1. 할일 저장 및 자동 새로고침 개선
+### 2025-12-03: 할일 목록 확인 기능 구현 ✅
+
+**구현 내용**: 날짜 클릭 시 해당 날짜의 모든 할일을 리스트로 표시하는 기능 추가
+
+**변경 사항**:
+
+1. **TaskListBottomSheet 추가** (`ui/task/TaskListBottomSheet.kt`)
+   - 날짜 클릭 시 해당 날짜의 모든 할일을 리스트로 표시
+   - "+ 새 할일" 버튼으로 새 할일 추가 가능
+   - 할일 클릭으로 수정, 롱 클릭으로 삭제
+   - 빈 상태 메시지 표시 ("등록된 할일이 없습니다")
+
+2. **TaskListAdapter 추가** (`ui/adapter/TaskListAdapter.kt`)
+   - RecyclerView로 할일 목록 표시
+   - 할일 제목, 내용, 이미지 썸네일, 생성 시간 표시
+   - 클릭/롱클릭 이벤트 처리
+   - DiffUtil을 사용한 효율적인 리스트 업데이트
+
+3. **CalendarFragment 수정**
+   - `onDateClick()` 메서드를 수정하여 `TaskListBottomSheet` 열도록 변경
+   - 기존: 날짜 클릭 → 바로 할일 추가
+   - 변경: 날짜 클릭 → 할일 목록 표시 → "+ 새 할일" 버튼으로 추가
+
+4. **AddTaskBottomSheet 수정**
+   - 수정 모드에서 삭제 버튼 표시 (`btnDelete`)
+   - `deleteTask()` 메서드 추가
+   - 삭제 확인 다이얼로그 추가 (MaterialAlertDialog)
+
+**새로운 레이아웃 파일**:
+- `bottom_sheet_task_list.xml`: 할일 목록 BottomSheet 레이아웃
+- `item_task_list.xml`: 할일 목록 아이템 레이아웃
+
+**주요 파일 변경**:
+- `CalendarFragment.kt:138-144` - TaskListBottomSheet 열기
+- `TaskListBottomSheet.kt` - 전체 파일 (신규)
+- `TaskListAdapter.kt` - 전체 파일 (신규)
+- `AddTaskBottomSheet.kt:146, 278-290` - 삭제 기능 추가
+- `bottom_sheet_add_task.xml:159-167` - 삭제 버튼 추가
+
+**사용자 플로우**:
+1. 날짜 클릭 → `TaskListBottomSheet` 열림
+2. 할일 목록 표시 (없으면 빈 상태 메시지)
+3. "+ 새 할일" 버튼 클릭 → `AddTaskBottomSheet` 열림
+4. 할일 항목 클릭 → 수정 모드로 `AddTaskBottomSheet` 열림
+5. 할일 항목 롱 클릭 → 삭제 확인 다이얼로그
+
+**개발자 노트**:
+- `TaskListBottomSheet`는 `CalendarViewModel.getTasksByDate()`를 사용하여 특정 날짜의 할일 조회
+- LiveData를 observe하여 실시간으로 할일 목록 업데이트
+- 삭제 기능은 두 곳에서 가능: 1) 수정 화면의 삭제 버튼, 2) 할일 목록의 롱 클릭
+
+### 2025-12-02: 할일 저장 및 자동 새로고침 개선
+
 **문제점**: CalendarViewModel의 monthTasks가 초기화 시점에만 설정되어, 월 변경 시 할일 목록이 자동으로 업데이트되지 않음
 
 **해결 방법**:

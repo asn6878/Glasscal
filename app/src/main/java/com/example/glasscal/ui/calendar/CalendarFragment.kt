@@ -136,14 +136,11 @@ class CalendarFragment : Fragment() {
      * 날짜 클릭 처리
      */
     private fun onDateClick(calendarDay: CalendarDay) {
-        // BottomSheet를 열어서 할일 추가
-        val bottomSheet = com.example.glasscal.ui.task.AddTaskBottomSheet.newInstance(
-            selectedDate = calendarDay.timestamp,
-            onTaskSaved = { task ->
-                viewModel.insertTask(task)
-            }
+        // TaskListBottomSheet를 열어서 할일 목록 확인
+        val bottomSheet = com.example.glasscal.ui.task.TaskListBottomSheet.newInstance(
+            selectedDate = calendarDay.timestamp
         )
-        bottomSheet.show(parentFragmentManager, "AddTaskBottomSheet")
+        bottomSheet.show(parentFragmentManager, "TaskListBottomSheet")
     }
 
     override fun onDestroyView() {

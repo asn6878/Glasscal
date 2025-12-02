@@ -143,6 +143,7 @@ class AddTaskBottomSheet : BottomSheetDialogFragment() {
             binding.tvSheetTitle.text = "할일 수정"
             binding.etTaskTitle.setText(task.title)
             binding.etTaskContent.setText(task.content)
+            binding.btnDelete.visibility = View.VISIBLE
 
             task.imageUri?.let { uri ->
                 selectedImageUri = Uri.parse(uri)
@@ -174,6 +175,11 @@ class AddTaskBottomSheet : BottomSheetDialogFragment() {
         // 저장 버튼
         binding.btnSave.setOnClickListener {
             saveTask()
+        }
+
+        // 삭제 버튼
+        binding.btnDelete.setOnClickListener {
+            deleteTask()
         }
     }
 
@@ -264,6 +270,23 @@ class AddTaskBottomSheet : BottomSheetDialogFragment() {
         // 콜백 호출
         onTaskSaved?.invoke(task)
         dismiss()
+    }
+
+    /**
+     * 할일 삭제
+     */
+    private fun deleteTask() {
+        editingTask?.let { task ->
+            com.google.android.material.dialog.MaterialAlertDialogBuilder(requireContext())
+                .setTitle("할일 삭제")
+                .setMessage("'${task.title}'을(를) 삭제하시겠습니까?")
+                .setPositiveButton("삭제") { _, _ ->
+                    onTaskDeleted?.invoke(task)
+                    dismiss()
+                }
+                .setNegativeButton("취소", null)
+                .show()
+        }
     }
 
     override fun onDestroyView() {
