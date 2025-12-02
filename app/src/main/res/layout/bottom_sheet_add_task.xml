@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Bottom Sheet for Adding/Editing Task -->
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_bottom_sheet"
+    android:padding="@dimen/spacing_large">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Handle Bar -->
+        <View
+            android:layout_width="48dp"
+            android:layout_height="4dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="@dimen/spacing_medium"
+            android:background="@color/text_hint"
+            android:alpha="0.5" />
+
+        <!-- Title -->
+        <TextView
+            android:id="@+id/tvSheetTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="새 할일 추가"
+            android:textColor="@color/text_primary"
+            android:textSize="@dimen/text_size_title"
+            android:textStyle="bold"
+            android:layout_marginBottom="@dimen/spacing_large" />
+
+        <!-- Task Title Input -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilTaskTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/spacing_medium"
+            android:hint="제목"
+            app:boxBackgroundColor="@color/glass_background_light"
+            app:boxCornerRadiusTopStart="@dimen/glass_corner_radius"
+            app:boxCornerRadiusTopEnd="@dimen/glass_corner_radius"
+            app:boxCornerRadiusBottomStart="@dimen/glass_corner_radius"
+            app:boxCornerRadiusBottomEnd="@dimen/glass_corner_radius"
+            app:boxStrokeColor="@color/primary_glass"
+            app:hintTextColor="@color/text_secondary">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etTaskTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:maxLines="1"
+                android:textColor="@color/text_primary"
+                android:textSize="@dimen/text_size_large" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Task Content Input -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilTaskContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/spacing_medium"
+            android:hint="내용"
+            app:boxBackgroundColor="@color/glass_background_light"
+            app:boxCornerRadiusTopStart="@dimen/glass_corner_radius"
+            app:boxCornerRadiusTopEnd="@dimen/glass_corner_radius"
+            app:boxCornerRadiusBottomStart="@dimen/glass_corner_radius"
+            app:boxCornerRadiusBottomEnd="@dimen/glass_corner_radius"
+            app:boxStrokeColor="@color/primary_glass"
+            app:hintTextColor="@color/text_secondary">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etTaskContent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine"
+                android:minLines="3"
+                android:maxLines="5"
+                android:gravity="top|start"
+                android:textColor="@color/text_primary"
+                android:textSize="@dimen/text_size_medium" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Selected Date Display -->
+        <TextView
+            android:id="@+id/tvSelectedDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/spacing_medium"
+            android:textColor="@color/text_secondary"
+            android:textSize="@dimen/text_size_medium"
+            tools:text="날짜: 2025년 1월 15일" />
+
+        <!-- Image Section -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="이미지 (선택사항)"
+            android:textColor="@color/text_primary"
+            android:textSize="@dimen/text_size_medium"
+            android:textStyle="bold"
+            android:layout_marginBottom="@dimen/spacing_small" />
+
+        <!-- Image Preview Container -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cvImagePreview"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_marginBottom="@dimen/spacing_medium"
+            android:visibility="gone"
+            app:cardCornerRadius="@dimen/glass_corner_radius"
+            app:cardElevation="@dimen/glass_elevation"
+            tools:visibility="visible">
+
+            <ImageView
+                android:id="@+id/ivImagePreview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                tools:src="@android:drawable/ic_menu_gallery" />
+
+            <!-- Remove Image Button -->
+            <ImageButton
+                android:id="@+id/btnRemoveImage"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_gravity="top|end"
+                android:layout_margin="@dimen/spacing_small"
+                android:background="@drawable/bg_glass_card"
+                android:src="@android:drawable/ic_menu_close_clear_cancel"
+                android:contentDescription="Remove Image" />
+
+        </androidx.cardview.widget.CardView>
+
+        <!-- Select Image Button -->
+        <Button
+            android:id="@+id/btnSelectImage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/spacing_large"
+            android:text="이미지 선택"
+            android:textColor="@color/text_primary"
+            android:background="@drawable/bg_glass_button"
+            android:paddingVertical="@dimen/spacing_medium" />
+
+        <!-- Action Buttons -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="end">
+
+            <!-- Cancel Button -->
+            <Button
+                android:id="@+id/btnCancel"
+                style="@style/Widget.Material3.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/spacing_small"
+                android:text="취소"
+                android:textColor="@color/text_secondary" />
+
+            <!-- Save Button -->
+            <Button
+                android:id="@+id/btnSave"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="저장"
+                android:textColor="@color/white"
+                android:background="@drawable/bg_glass_button"
+                android:paddingHorizontal="@dimen/spacing_large" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>

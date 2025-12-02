@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Calendar Cell Item with Glassmorphism Design -->
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cellCard"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/calendar_cell_height"
+    android:layout_margin="@dimen/calendar_cell_margin"
+    android:elevation="@dimen/glass_elevation"
+    app:cardBackgroundColor="@android:color/transparent"
+    app:cardCornerRadius="@dimen/calendar_cell_corner_radius"
+    app:cardElevation="0dp">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!-- Background Image (if task has image) -->
+        <ImageView
+            android:id="@+id/ivTaskBackground"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:alpha="0.3"
+            android:visibility="gone"
+            tools:visibility="visible"
+            tools:src="@android:drawable/ic_menu_gallery" />
+
+        <!-- Glassmorphism Background with Blur -->
+        <eightbitlab.com.blurview.BlurView
+            android:id="@+id/blurView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_calendar_cell" />
+
+        <!-- Content Container -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="@dimen/calendar_cell_padding">
+
+            <!-- Date Number -->
+            <TextView
+                android:id="@+id/tvDateNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/calendar_text"
+                android:textSize="@dimen/text_size_large"
+                android:textStyle="bold"
+                tools:text="15" />
+
+            <!-- Task Preview Container -->
+            <LinearLayout
+                android:id="@+id/taskPreviewContainer"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:layout_marginTop="@dimen/spacing_tiny"
+                android:orientation="vertical"
+                android:gravity="top">
+
+                <!-- Task Title Preview (최대 2줄) -->
+                <TextView
+                    android:id="@+id/tvTaskPreview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/text_primary"
+                    android:textSize="@dimen/text_size_small"
+                    android:maxLines="2"
+                    android:ellipsize="end"
+                    android:visibility="gone"
+                    tools:visibility="visible"
+                    tools:text="운동 하러 가기..." />
+
+                <!-- Task Count Indicator (할일이 2개 이상일 때) -->
+                <TextView
+                    android:id="@+id/tvTaskCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_tiny"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="@dimen/text_size_small"
+                    android:visibility="gone"
+                    tools:visibility="visible"
+                    tools:text="+2 more" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- Today Indicator -->
+        <View
+            android:id="@+id/todayIndicator"
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:layout_gravity="bottom"
+            android:background="@color/calendar_today"
+            android:visibility="gone" />
+
+    </FrameLayout>
+
+</androidx.cardview.widget.CardView>
