@@ -1,19 +1,13 @@
 package com.example.glasscal
 
 import android.os.Bundle
-import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.navigateUp
-import androidx.navigation.ui.setupActionBarWithNavController
-import android.view.Menu
-import android.view.MenuItem
 import com.example.glasscal.databinding.ActivityMainBinding
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,38 +16,51 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setSupportActionBar(binding.toolbar)
+        setupFab()
+    }
 
-        val navController = findNavController(R.id.nav_host_fragment_content_main)
-        appBarConfiguration = AppBarConfiguration(navController.graph)
-        setupActionBarWithNavController(navController, appBarConfiguration)
-
-        binding.fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null)
-                .setAnchorView(R.id.fab).show()
+    /**
+     * FAB 클릭 시 메뉴 표시
+     */
+    private fun setupFab() {
+        binding.fab.setOnClickListener {
+            showMenuDialog()
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.menu_main, menu)
-        return true
-    }
+    /**
+     * 메뉴 다이얼로그 표시
+     */
+    private fun showMenuDialog() {
+        val navController = findNavController(R.id.nav_host_fragment)
+        val currentDestination = navController.currentDestination?.id
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        return when (item.itemId) {
-            R.id.action_settings -> true
-            else -> super.onOptionsItemSelected(item)
-        }
+        val options = arrayOf("로그인", "설정")
+
+        MaterialAlertDialogBuilder(this)
+            .setTitle("메뉴")
+            .setItems(options) { dialog, which ->
+                when (which) {
+                    0 -> {
+                        // 로그인 화면으로 이동
+                        if (currentDestination != R.id.loginFragment) {
+                            navController.navigate(R.id.loginFragment)
+                        }
+                    }
+                    1 -> {
+                        // 설정 화면으로 이동
+                        if (currentDestination != R.id.settingsFragment) {
+                            navController.navigate(R.id.settingsFragment)
+                        }
+                    }
+                }
+                dialog.dismiss()
+            }
+            .show()
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        val navController = findNavController(R.id.nav_host_fragment_content_main)
-        return navController.navigateUp(appBarConfiguration)
-                || super.onSupportNavigateUp()
+        val navController = findNavController(R.id.nav_host_fragment)
+        return navController.navigateUp() || super.onSupportNavigateUp()
     }
 }

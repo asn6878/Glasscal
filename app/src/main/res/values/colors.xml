@@ -2,4 +2,31 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!-- Glassmorphism Colors -->
+    <color name="glass_background">#B3FFFFFF</color> <!-- 70% white -->
+    <color name="glass_background_light">#E6FFFFFF</color> <!-- 90% white - more opaque -->
+    <color name="glass_border">#4DFFFFFF</color> <!-- 30% white for border -->
+    <color name="glass_shadow">#26000000</color> <!-- 15% black for shadow -->
+
+    <!-- Primary Colors for Glassmorphism -->
+    <color name="primary_glass">#80E3F2FD</color> <!-- Light blue with transparency -->
+    <color name="secondary_glass">#80F3E5F5</color> <!-- Light purple with transparency -->
+    <color name="accent_glass">#80FFECB3</color> <!-- Light amber with transparency -->
+
+    <!-- Background Gradient Colors -->
+    <color name="gradient_start">#E3F2FD</color> <!-- Light blue -->
+    <color name="gradient_middle">#F3E5F5</color> <!-- Light purple -->
+    <color name="gradient_end">#FFF3E0</color> <!-- Light orange -->
+
+    <!-- Text Colors -->
+    <color name="text_primary">#212121</color>
+    <color name="text_secondary">#757575</color>
+    <color name="text_hint">#BDBDBD</color>
+
+    <!-- Calendar Specific Colors -->
+    <color name="calendar_today">#80FF5722</color> <!-- Today highlight -->
+    <color name="calendar_selected">#8064B5F6</color> <!-- Selected date -->
+    <color name="calendar_text">#424242</color>
+    <color name="calendar_text_weekend">#D32F2F</color>
 </resources>
