@@ -14,7 +14,7 @@
         android:orientation="vertical"
         android:padding="@dimen/spacing_medium">
 
-        <!-- User Profile Section -->
+        <!-- Sync Status Section -->
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -32,63 +32,32 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="사용자 프로필"
+                    android:text="동기화 상태"
                     android:textColor="@color/text_primary"
                     android:textSize="@dimen/text_size_xlarge"
                     android:textStyle="bold"
                     android:layout_marginBottom="@dimen/spacing_medium" />
 
-                <!-- User Info (Dummy) -->
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <!-- Sync Status Text -->
+                <TextView
+                    android:id="@+id/tvSyncStatus"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical">
+                    android:text="클라우드 동기화 필요"
+                    android:textColor="@color/calendar_text_weekend"
+                    android:textSize="@dimen/text_size_large"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="@dimen/spacing_tiny" />
 
-                    <!-- Profile Image Placeholder -->
-                    <View
-                        android:layout_width="64dp"
-                        android:layout_height="64dp"
-                        android:background="@drawable/bg_calendar_cell"
-                        android:layout_marginEnd="@dimen/spacing_medium" />
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/tvUserName"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="로그인이 필요합니다"
-                            android:textColor="@color/text_primary"
-                            android:textSize="@dimen/text_size_large"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:id="@+id/tvUserEmail"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="OAuth 로그인 후 이용 가능"
-                            android:textColor="@color/text_secondary"
-                            android:textSize="@dimen/text_size_medium"
-                            android:layout_marginTop="@dimen/spacing_tiny" />
-
-                    </LinearLayout>
-
-                </LinearLayout>
-
-                <!-- Login Button -->
-                <Button
-                    android:id="@+id/btnLogin"
-                    android:layout_width="match_parent"
+                <!-- Sync ID Display -->
+                <TextView
+                    android:id="@+id/tvSyncId"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing_medium"
-                    android:text="로그인"
-                    android:textColor="@color/white"
-                    android:background="@drawable/bg_glass_button" />
+                    android:text="동기화 ID: 없음"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="@dimen/text_size_medium"
+                    android:visibility="gone" />
 
             </LinearLayout>
 
@@ -162,18 +131,17 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/spacing_small"
-                    android:text="데이터 동기화"
-                    android:textColor="@color/text_primary"
-                    android:enabled="false" />
+                    android:text="동기화"
+                    android:textColor="@color/text_primary" />
 
-                <!-- Export Data Button -->
+                <!-- Fetch Data Button -->
                 <Button
-                    android:id="@+id/btnExportData"
+                    android:id="@+id/btnFetchData"
                     style="@style/Widget.Material3.Button.OutlinedButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/spacing_small"
-                    android:text="데이터 내보내기"
+                    android:text="데이터 가져오기"
                     android:textColor="@color/text_primary" />
 
                 <!-- Clear Data Button -->
@@ -189,7 +157,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/spacing_small"
-                    android:text="※ 데이터 동기화는 로그인 후 이용 가능합니다"
+                    android:text="※ 데이터는 localhost:8080에 동기화됩니다"
                     android:textColor="@color/text_hint"
                     android:textSize="@dimen/text_size_small" />
 

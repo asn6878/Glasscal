@@ -35,28 +35,10 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment)
         val currentDestination = navController.currentDestination?.id
 
-        val options = arrayOf("로그인", "설정")
-
-        MaterialAlertDialogBuilder(this)
-            .setTitle("메뉴")
-            .setItems(options) { dialog, which ->
-                when (which) {
-                    0 -> {
-                        // 로그인 화면으로 이동
-                        if (currentDestination != R.id.loginFragment) {
-                            navController.navigate(R.id.loginFragment)
-                        }
-                    }
-                    1 -> {
-                        // 설정 화면으로 이동
-                        if (currentDestination != R.id.settingsFragment) {
-                            navController.navigate(R.id.settingsFragment)
-                        }
-                    }
-                }
-                dialog.dismiss()
-            }
-            .show()
+        // 설정 화면으로 이동
+        if (currentDestination != R.id.settingsFragment) {
+            navController.navigate(R.id.settingsFragment)
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {

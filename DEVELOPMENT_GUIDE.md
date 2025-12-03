@@ -1,4 +1,4 @@
-# Glasscal - 글래스모피즘 캘린더 앱 개발 가이드
+ㅈㅈㅈㅈㅈㅈㅈㅈㅈㅈ# Glasscal - 글래스모피즘 캘린더 앱 개발 가이드
 
 ## 프로젝트 개요
 글래스모피즘(Glassmorphism) 디자인을 적용한 Android 기반 캘린더 애플리케이션
@@ -8,8 +8,8 @@
 - 날짜별 할일 관리 (제목, 내용, 이미지)
 - 할일 미리보기 (텍스트 말줄임 처리)
 - 이미지 배경 (불투명 효과)
-- OAuth 로그인 (Google, Github)
-- 로컬 데이터 저장 (Firebase 확장 가능)
+- 클라우드 동기화 (localhost:8080 서버)
+- 로컬 데이터 저장 (Room Database)
 
 ## 기술 스택
 
@@ -53,9 +53,13 @@ implementation "com.github.Dimezis:BlurView:version-2.0.3"
 implementation "androidx.activity:activity-ktx:1.8.2"
 implementation "androidx.fragment:fragment-ktx:1.6.2"
 
-// Firebase (추후)
-// implementation "com.google.firebase:firebase-firestore-ktx"
-// implementation "com.google.firebase:firebase-auth-ktx"
+// Retrofit for API calls
+implementation "com.squareup.retrofit2:retrofit:2.9.0"
+implementation "com.squareup.retrofit2:converter-gson:2.9.0"
+implementation "com.squareup.okhttp3:logging-interceptor:4.11.0"
+
+// Gson for JSON serialization
+implementation "com.google.code.gson:gson:2.10.1"
 ```
 
 **주의사항**: BlurView 라이브러리를 사용하려면 settings.gradle.kts에 JitPack repository를 추가해야 합니다:
@@ -72,19 +76,26 @@ repositories {
 ```
 app/src/main/java/com/example/glasscal/
 ├── data/
+│   ├── api/               # Retrofit API 서비스
+│   │   ├── CloudSyncService.kt        # 동기화 API 인터페이스
+│   │   └── RetrofitClient.kt          # Retrofit 클라이언트
 │   ├── local/
 │   │   ├── entity/        # Room Entity 클래스
 │   │   ├── dao/           # Room DAO 인터페이스
-│   │   └── database/      # Room Database 클래스
+│   │   ├── database/      # Room Database 클래스
+│   │   └── SyncPreferences.kt         # 동기화 설정 저장
 │   ├── model/             # 데이터 모델
+│   │   ├── CalendarDay.kt             # 캘린더 날짜 모델
+│   │   └── SyncData.kt                # 동기화 데이터 모델
 │   └── repository/        # Repository 패턴
+│       ├── TaskRepository.kt          # 할일 저장소
+│       └── CloudSyncRepository.kt     # 동기화 저장소
 ├── ui/
 │   ├── calendar/          # 캘린더 화면
 │   ├── task/              # 할일 등록/수정/목록 화면
 │   │   ├── AddTaskBottomSheet.kt      # 할일 추가/수정
 │   │   └── TaskListBottomSheet.kt     # 할일 목록 표시
-│   ├── auth/              # 로그인 화면
-│   ├── settings/          # 설정 화면
+│   ├── settings/          # 설정 화면 (동기화 기능)
 │   └── adapter/           # RecyclerView Adapters
 │       ├── CalendarAdapter.kt         # 캘린더 그리드
 │       └── TaskListAdapter.kt         # 할일 목록
@@ -204,6 +215,92 @@ data class Task(
 - [x] FAB 메뉴 기능 구현
 
 ## 최근 변경 사항
+
+### 2025-12-04: 클라우드 동기화 기능 추가 ✅
+
+**구현 내용**: OAuth 로그인 기능을 제거하고, localhost:8080 서버와 데이터 동기화 기능 추가
+
+**변경 사항**:
+
+1. **OAuth 로그인 기능 제거**
+   - MainActivity에서 로그인 메뉴 제거 (`MainActivity.kt:34-42`)
+   - FAB 버튼 클릭 시 바로 설정 화면으로 이동
+   - LoginFragment는 유지 (추후 필요시 사용 가능)
+
+2. **Retrofit 및 네트워크 라이브러리 추가** (`build.gradle.kts`)
+   - Retrofit 2.9.0
+   - Gson Converter 2.9.0
+   - OkHttp Logging Interceptor 4.11.0
+
+3. **클라우드 동기화 API 서비스** (신규 파일)
+   - `CloudSyncService.kt`: REST API 인터페이스 정의
+     - GET {id}: 클라우드 데이터 가져오기
+     - GET status/{id}: 동기화 상태 조회
+     - POST {id}: 클라우드 데이터 업데이트
+   - `RetrofitClient.kt`: Retrofit 싱글톤 클라이언트
+   - `SyncData.kt`: 동기화 데이터 모델 (TaskData, SyncStatusResponse, SyncResponse)
+
+4. **동기화 상태 관리** (신규 파일)
+   - `SyncPreferences.kt`: SharedPreferences로 동기화 정보 저장
+     - 동기화 ID (UUID)
+     - 마지막 동기화 날짜
+     - 동기화 상태 (boolean)
+
+5. **CloudSyncRepository** (신규 파일)
+   - `getOrCreateSyncId()`: 동기화 ID 생성 또는 가져오기
+   - `checkSyncStatus()`: 클라우드 동기화 상태 확인
+   - `syncToCloud()`: 로컬 데이터를 클라우드에 업로드
+   - `fetchFromCloud()`: 클라우드 데이터 가져오기 (로컬 덮어쓰기)
+   - `deleteAllData()`: 모든 데이터 삭제
+
+6. **설정 화면 UI 업데이트** (`fragment_settings.xml`)
+   - 사용자 프로필 섹션 → 동기화 상태 섹션으로 변경
+   - 동기화 상태 텍스트 표시 (완료/필요)
+   - 동기화 ID 표시
+   - "동기화" 버튼
+   - "데이터 가져오기" 버튼
+   - "모든 데이터 삭제" 버튼
+
+7. **SettingsFragment 전면 수정** (`SettingsFragment.kt`)
+   - `updateSyncStatus()`: 동기화 상태 UI 업데이트
+   - `syncDataToCloud()`: 클라우드 동기화 실행
+   - `showFetchDataDialog()`: 데이터 가져오기 다이얼로그 (ID 입력)
+   - `fetchDataFromCloud()`: 클라우드에서 데이터 가져오기
+   - `showClearDataDialog()`: 데이터 삭제 확인 다이얼로그
+   - `clearAllData()`: 모든 데이터 삭제
+
+8. **네트워크 권한 추가** (`AndroidManifest.xml`)
+   - INTERNET 권한
+   - ACCESS_NETWORK_STATE 권한
+   - cleartext traffic 허용 (localhost 접근용)
+   - `network_security_config.xml`: localhost, 127.0.0.1, 10.0.2.2 허용
+
+**주요 파일 변경**:
+- `MainActivity.kt:34-42` - 로그인 메뉴 제거, 설정 화면으로 바로 이동
+- `build.gradle.kts:75-81` - Retrofit 의존성 추가
+- `CloudSyncService.kt` - 전체 파일 (신규)
+- `RetrofitClient.kt` - 전체 파일 (신규)
+- `SyncData.kt` - 전체 파일 (신규)
+- `SyncPreferences.kt` - 전체 파일 (신규)
+- `CloudSyncRepository.kt` - 전체 파일 (신규)
+- `SettingsFragment.kt` - 전체 파일 (재작성)
+- `fragment_settings.xml:17-64` - 동기화 상태 섹션 추가
+- `fragment_settings.xml:127-162` - 데이터 관리 버튼 수정
+- `AndroidManifest.xml:10-12, 23-24` - 네트워크 권한 및 설정 추가
+- `network_security_config.xml` - 전체 파일 (신규)
+
+**사용자 플로우**:
+1. 설정 화면 진입 → 동기화 상태 자동 확인
+2. "동기화" 버튼 클릭 → 로컬 데이터 클라우드에 업로드 → 동기화 ID 표시
+3. "데이터 가져오기" 버튼 클릭 → ID 입력 → 클라우드 데이터로 덮어쓰기 (경고 포함)
+4. "모든 데이터 삭제" 버튼 클릭 → 확인 → 로컬 및 동기화 정보 삭제
+
+**개발자 노트**:
+- 동기화 ID는 UUID.randomUUID()로 생성
+- localhost:8080을 기본 서버 주소로 사용
+- Android 에뮬레이터에서는 10.0.2.2를 통해 호스트의 localhost 접근 가능
+- 현재는 클라우드 데이터 삭제 API가 없어 로컬 데이터만 삭제
+- 이미지 URI는 문자열로 저장되므로 클라우드 이미지 저장소 필요 시 추가 구현 필요
 
 ### 2025-12-03: 할일 목록 확인 기능 구현 ✅
 
@@ -345,18 +442,14 @@ val scaleUp = AnimationUtils.loadAnimation(context, R.anim.scale_up)
 view.startAnimation(scaleUp)
 ```
 
-## 추후 작업 사항 (백엔드 개발 후)
+## 추후 작업 사항
 
-### Firebase 연동
-- [ ] Firebase 프로젝트 설정
-- [ ] Firebase Authentication
-  - [ ] Google OAuth 연동
-  - [ ] Github OAuth 연동
-- [ ] Firestore Database
-  - [ ] Task 데이터 동기화
-  - [ ] 로컬-원격 동기화 로직
-- [ ] Firebase Storage
-  - [ ] 이미지 업로드/다운로드
+### 클라우드 동기화 개선
+- [ ] 클라우드 데이터 삭제 API 구현 및 연동
+- [ ] 이미지 클라우드 저장소 구현 (Firebase Storage 또는 별도 서버)
+- [ ] 동기화 충돌 해결 로직
+- [ ] 자동 동기화 기능 (백그라운드 동기화)
+- [ ] 동기화 오류 처리 및 재시도 로직
 
 ### 고급 기능
 - [ ] 푸시 알림 (할일 리마인더)
@@ -364,6 +457,7 @@ view.startAnimation(scaleUp)
 - [ ] 공유 기능 (할일 공유)
 - [ ] 검색 기능
 - [ ] 필터링/정렬
+- [ ] 다크모드 수동 전환 옵션
 
 ## 코딩 컨벤션
 
