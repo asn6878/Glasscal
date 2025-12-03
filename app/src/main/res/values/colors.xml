@@ -3,16 +3,25 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <!-- Glassmorphism Colors -->
-    <color name="glass_background">#B3FFFFFF</color> <!-- 70% white -->
-    <color name="glass_background_light">#E6FFFFFF</color> <!-- 90% white - more opaque -->
+    <!-- Glassmorphism Colors - Enhanced -->
+    <color name="glass_background">#66FFFFFF</color> <!-- 40% white - more transparent -->
+    <color name="glass_background_light">#99FFFFFF</color> <!-- 60% white - semi-transparent -->
     <color name="glass_border">#4DFFFFFF</color> <!-- 30% white for border -->
+    <color name="glass_border_bright">#CCFFFFFF</color> <!-- 80% white - bright highlight border -->
     <color name="glass_shadow">#26000000</color> <!-- 15% black for shadow -->
+    <color name="glass_highlight">#33FFFFFF</color> <!-- 20% white - subtle highlight -->
+
+    <!-- Glass Button Colors - Vibrant but transparent -->
+    <color name="glass_blue">#6642A5F5</color> <!-- Blue glass - 40% opacity -->
+    <color name="glass_purple">#66AB47BC</color> <!-- Purple glass - 40% opacity -->
+    <color name="glass_green">#6626A69A</color> <!-- Green glass - 40% opacity -->
+    <color name="glass_pink">#66EC407A</color> <!-- Pink glass - 40% opacity -->
+    <color name="glass_orange">#66FF7043</color> <!-- Orange glass - 40% opacity -->
 
     <!-- Primary Colors for Glassmorphism -->
-    <color name="primary_glass">#80E3F2FD</color> <!-- Light blue with transparency -->
-    <color name="secondary_glass">#80F3E5F5</color> <!-- Light purple with transparency -->
-    <color name="accent_glass">#80FFECB3</color> <!-- Light amber with transparency -->
+    <color name="primary_glass">#6642A5F5</color> <!-- Light blue with transparency -->
+    <color name="secondary_glass">#66AB47BC</color> <!-- Light purple with transparency -->
+    <color name="accent_glass">#66FFB300</color> <!-- Amber with transparency -->
 
     <!-- Background Gradient Colors -->
     <color name="gradient_start">#E3F2FD</color> <!-- Light blue -->
@@ -25,8 +34,8 @@
     <color name="text_hint">#BDBDBD</color>
 
     <!-- Calendar Specific Colors -->
-    <color name="calendar_today">#80FF5722</color> <!-- Today highlight -->
-    <color name="calendar_selected">#8064B5F6</color> <!-- Selected date -->
+    <color name="calendar_today">#66FF5722</color> <!-- Today highlight - more transparent -->
+    <color name="calendar_selected">#6642A5F5</color> <!-- Selected date - glass blue -->
     <color name="calendar_text">#424242</color>
     <color name="calendar_text_weekend">#D32F2F</color>
 </resources>

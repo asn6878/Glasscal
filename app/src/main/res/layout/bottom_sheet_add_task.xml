@@ -146,7 +146,7 @@
             android:layout_marginBottom="@dimen/spacing_large"
             android:text="이미지 선택"
             android:textColor="@color/text_primary"
-            android:background="@drawable/bg_glass_button"
+            android:background="@drawable/bg_glass_button_purple"
             android:paddingVertical="@dimen/spacing_medium" />
 
         <!-- Action Buttons -->
@@ -188,7 +188,7 @@
                 android:layout_height="wrap_content"
                 android:text="저장"
                 android:textColor="@color/text_primary"
-                android:background="@drawable/bg_glass_button"
+                android:background="@drawable/bg_glass_button_green"
                 android:paddingHorizontal="@dimen/spacing_large" />
 
         </LinearLayout>

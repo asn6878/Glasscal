@@ -1,13 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Main Background Gradient for Glassmorphism Effect -->
-<shape xmlns:android="http://schemas.android.com/apk/res/android"
-    android:shape="rectangle">
+<!-- Enhanced Main Background Gradient for Glassmorphism Effect -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <gradient
-        android:angle="135"
-        android:startColor="@color/gradient_start"
-        android:centerColor="@color/gradient_middle"
-        android:endColor="@color/gradient_end"
-        android:type="linear" />
+    <!-- Base gradient -->
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:angle="135"
+                android:startColor="@color/gradient_start"
+                android:centerColor="@color/gradient_middle"
+                android:endColor="@color/gradient_end"
+                android:type="linear" />
+        </shape>
+    </item>
 
-</shape>
+    <!-- Subtle overlay for depth -->
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:angle="225"
+                android:startColor="#1042A5F5"
+                android:centerColor="#00FFFFFF"
+                android:endColor="#10AB47BC"
+                android:type="linear" />
+        </shape>
+    </item>
+
+</layer-list>
+
