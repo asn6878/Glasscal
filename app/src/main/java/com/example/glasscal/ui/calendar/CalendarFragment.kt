@@ -56,7 +56,14 @@ class CalendarFragment : Fragment() {
         decorView?.let {
             val windowBackground: Drawable? = decorView.background
 
+            // Header BlurView
             binding.headerBlurView.setupWith(decorView, RenderScriptBlur(requireContext()))
+                .setFrameClearDrawable(windowBackground)
+                .setBlurRadius(20f)
+                .setBlurAutoUpdate(true)
+
+            // Day of Week Header BlurView
+            binding.dayOfWeekBlurView.setupWith(decorView, RenderScriptBlur(requireContext()))
                 .setFrameClearDrawable(windowBackground)
                 .setBlurRadius(20f)
                 .setBlurAutoUpdate(true)

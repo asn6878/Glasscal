@@ -2,15 +2,18 @@
     <dimen name="fab_margin">16dp</dimen>
 
     <!-- Glassmorphism Dimensions -->
-    <dimen name="glass_elevation">8dp</dimen>
-    <dimen name="glass_corner_radius">16dp</dimen>
-    <dimen name="glass_border_width">1dp</dimen>
+    <dimen name="glass_elevation">15dp</dimen> <!-- Shadow blur radius 15dp -->
+    <dimen name="glass_corner_radius">24dp</dimen> <!-- Default corner radius 24dp -->
+    <dimen name="glass_corner_radius_medium">20dp</dimen> <!-- Medium corner radius -->
+    <dimen name="glass_corner_radius_small">16dp</dimen> <!-- Small corner radius -->
+    <dimen name="glass_border_width">1dp</dimen> <!-- Border width 1dp -->
+    <dimen name="glass_border_width_thick">2dp</dimen> <!-- Border width 2dp (optional) -->
 
     <!-- Calendar Dimensions -->
     <dimen name="calendar_cell_height">80dp</dimen>
     <dimen name="calendar_cell_margin">4dp</dimen>
     <dimen name="calendar_cell_padding">8dp</dimen>
-    <dimen name="calendar_cell_corner_radius">12dp</dimen>
+    <dimen name="calendar_cell_corner_radius">24dp</dimen> <!-- Updated to 24dp -->
 
     <!-- Spacing -->
     <dimen name="spacing_tiny">4dp</dimen>

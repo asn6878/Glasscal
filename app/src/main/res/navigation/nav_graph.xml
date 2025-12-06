@@ -12,12 +12,6 @@
         tools:layout="@layout/fragment_calendar" />
 
     <fragment
-        android:id="@+id/loginFragment"
-        android:name="com.example.glasscal.ui.auth.LoginFragment"
-        android:label="로그인"
-        tools:layout="@layout/fragment_login" />
-
-    <fragment
         android:id="@+id/settingsFragment"
         android:name="com.example.glasscal.ui.settings.SettingsFragment"
         android:label="설정"

@@ -199,14 +199,12 @@ data class Task(
   - [x] 애니메이션 추가 (클릭, 페이드, 슬라이드)
   - [x] 다크모드 대응 (colors-night.xml, drawable-night)
 
-### Phase 6: 로그인/설정 화면 (디자인만) ✅ 완료
-- [x] 로그인 화면 레이아웃
-  - [x] OAuth 버튼 (Google, Github)
-  - [x] 글래스모피즘 디자인 적용
+### Phase 6: 설정 화면 ✅ 완료
 - [x] 설정 화면 레이아웃
-  - [x] 사용자 프로필 (더미)
+  - [x] 동기화 상태 표시
   - [x] 데이터 관리 옵션
   - [x] 앱 정보 표시
+- [x] 로그인 기능 제거됨 (2025-12-06)
 
 ### Phase 7: 네비게이션 및 통합 ✅ 완료
 - [x] MainActivity 업데이트
@@ -225,7 +223,7 @@ data class Task(
 1. **OAuth 로그인 기능 제거**
    - MainActivity에서 로그인 메뉴 제거 (`MainActivity.kt:34-42`)
    - FAB 버튼 클릭 시 바로 설정 화면으로 이동
-   - LoginFragment는 유지 (추후 필요시 사용 가능)
+   - LoginFragment 완전 제거됨 (2025-12-06)
 
 2. **Retrofit 및 네트워크 라이브러리 추가** (`build.gradle.kts`)
    - Retrofit 2.9.0
@@ -398,9 +396,9 @@ data class Task(
 - `SettingsFragment.kt:46-48` - 스위치 리스너 제거
 
 **현재 설정 화면 구성**:
-- 사용자 프로필 (로그인 버튼)
+- 동기화 상태 (동기화 ID, 상태 표시)
 - 앱 설정 (추후 구현 예정 안내)
-- 데이터 관리 (동기화, 내보내기, 삭제)
+- 데이터 관리 (동기화, 데이터 가져오기, 삭제)
 - 정보 (앱 버전)
 
 ## 구현된 기능 상세 설명
