@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import com.example.glasscal.databinding.ActivityMainBinding
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class MainActivity : AppCompatActivity() {
 
@@ -20,22 +19,21 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
-     * FAB 클릭 시 메뉴 표시
+     * FAB 클릭 시 설정 화면으로 이동
      */
     private fun setupFab() {
         binding.fab.setOnClickListener {
-            showMenuDialog()
+            navigateToSettings()
         }
     }
 
     /**
-     * 메뉴 다이얼로그 표시
+     * 설정 화면으로 이동
      */
-    private fun showMenuDialog() {
+    private fun navigateToSettings() {
         val navController = findNavController(R.id.nav_host_fragment)
         val currentDestination = navController.currentDestination?.id
 
-        // 설정 화면으로 이동
         if (currentDestination != R.id.settingsFragment) {
             navController.navigate(R.id.settingsFragment)
         }

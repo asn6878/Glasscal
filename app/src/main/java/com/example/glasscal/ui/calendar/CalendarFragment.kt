@@ -15,7 +15,6 @@ import com.example.glasscal.ui.adapter.CalendarAdapter
 import com.example.glasscal.util.CalendarUtils
 import com.example.glasscal.viewmodel.CalendarViewModel
 import eightbitlab.com.blurview.RenderScriptBlur
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 /**
@@ -56,13 +55,11 @@ class CalendarFragment : Fragment() {
         decorView?.let {
             val windowBackground: Drawable? = decorView.background
 
-            // Header BlurView
             binding.headerBlurView.setupWith(decorView, RenderScriptBlur(requireContext()))
                 .setFrameClearDrawable(windowBackground)
                 .setBlurRadius(20f)
                 .setBlurAutoUpdate(true)
 
-            // Day of Week Header BlurView
             binding.dayOfWeekBlurView.setupWith(decorView, RenderScriptBlur(requireContext()))
                 .setFrameClearDrawable(windowBackground)
                 .setBlurRadius(20f)

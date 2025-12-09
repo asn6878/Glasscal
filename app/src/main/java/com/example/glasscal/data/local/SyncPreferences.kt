@@ -35,13 +35,6 @@ class SyncPreferences(context: Context) {
     }
 
     /**
-     * 동기화 ID 삭제
-     */
-    fun clearSyncId() {
-        prefs.edit().remove(KEY_SYNC_ID).apply()
-    }
-
-    /**
      * 마지막 동기화 날짜 저장
      */
     fun saveLastSyncDate(date: String) {

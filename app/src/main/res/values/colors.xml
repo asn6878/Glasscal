@@ -11,26 +11,15 @@
     <color name="glass_shadow">#33004585</color> <!-- Shadow Blue (#004585) 20% opacity -->
     <color name="glass_highlight">#33FFFFFF</color> <!-- 20% white - subtle highlight -->
 
-    <!-- Glassmorphism Gradient Colors -->
-    <color name="glass_gradient_start">#FFFFFF99</color> <!-- White 60% opacity -->
-    <color name="glass_gradient_end">#FFFFFF00</color> <!-- White 0% opacity (transparent) -->
-
     <!-- Glass Button Colors - Vibrant but transparent -->
     <color name="glass_blue">#6642A5F5</color> <!-- Blue glass - 40% opacity -->
     <color name="glass_purple">#66AB47BC</color> <!-- Purple glass - 40% opacity -->
     <color name="glass_green">#6626A69A</color> <!-- Green glass - 40% opacity -->
     <color name="glass_pink">#66EC407A</color> <!-- Pink glass - 40% opacity -->
-    <color name="glass_orange">#66FF7043</color> <!-- Orange glass - 40% opacity -->
 
     <!-- Primary Colors for Glassmorphism -->
     <color name="primary_glass">#6642A5F5</color> <!-- Light blue with transparency -->
     <color name="secondary_glass">#66AB47BC</color> <!-- Light purple with transparency -->
-    <color name="accent_glass">#66FFB300</color> <!-- Amber with transparency -->
-
-    <!-- Background Gradient Colors -->
-    <color name="gradient_start">#E3F2FD</color> <!-- Light blue -->
-    <color name="gradient_middle">#F3E5F5</color> <!-- Light purple -->
-    <color name="gradient_end">#E8EAF6</color> <!-- Light indigo - 자연스러운 밝은색 -->
 
     <!-- Text Colors -->
     <color name="text_primary">#212121</color>

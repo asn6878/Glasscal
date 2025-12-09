@@ -12,12 +12,6 @@
     <!-- Primary Colors for Glassmorphism (Dark Mode) -->
     <color name="primary_glass">#801A237E</color> <!-- Dark blue with transparency -->
     <color name="secondary_glass">#804A148C</color> <!-- Dark purple with transparency -->
-    <color name="accent_glass">#80E65100</color> <!-- Dark amber with transparency -->
-
-    <!-- Background Gradient Colors (Dark Mode) -->
-    <color name="gradient_start">#0D47A1</color> <!-- Dark blue -->
-    <color name="gradient_middle">#4A148C</color> <!-- Dark purple -->
-    <color name="gradient_end">#E65100</color> <!-- Dark orange -->
 
     <!-- Text Colors (Dark Mode) -->
     <color name="text_primary">#E0E0E0</color>
