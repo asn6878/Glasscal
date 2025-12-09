@@ -4,7 +4,6 @@ import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AnimationUtils
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -12,8 +11,6 @@ import coil.load
 import com.example.glasscal.R
 import com.example.glasscal.data.model.CalendarDay
 import com.example.glasscal.databinding.ItemCalendarCellBinding
-import eightbitlab.com.blurview.RenderScriptBlur
-
 /**
  * RecyclerView Adapter for Calendar Grid
  * 캘린더 그리드를 위한 어댑터
@@ -42,23 +39,6 @@ class CalendarAdapter(
         private val binding: ItemCalendarCellBinding,
         private val onDateClick: (CalendarDay) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
-
-        init {
-            // BlurView 초기화
-            setupBlurView()
-        }
-
-        private fun setupBlurView() {
-            val decorView = (binding.root.context as? android.app.Activity)?.window?.decorView as? ViewGroup
-            decorView?.let {
-                val windowBackground: Drawable? = decorView.background
-
-                binding.blurView.setupWith(decorView, RenderScriptBlur(binding.root.context))
-                    .setFrameClearDrawable(windowBackground)
-                    .setBlurRadius(20f)
-                    .setBlurAutoUpdate(true)
-            }
-        }
 
         fun bind(calendarDay: CalendarDay) {
             binding.apply {
@@ -98,8 +78,8 @@ class CalendarAdapter(
                                 crossfade(true)
                                 placeholder(R.drawable.bg_calendar_cell)
                                 error(R.drawable.bg_calendar_cell)
-                                // BlurView와 호환되도록 hardware bitmap 비활성화
-                                allowHardware(false)
+                                // 하드웨어 가속 활성화로 성능 최적화
+                                allowHardware(true)
                                 listener(
                                     onError = { _, _ ->
                                         // 이미지 로드 실패 시 백그라운드 숨김
@@ -120,18 +100,28 @@ class CalendarAdapter(
                     ivTaskBackground.visibility = View.GONE
                 }
 
-                // 클릭 이벤트 with 애니메이션
+                // 클릭 이벤트 with Property Animation (성능 최적화)
                 cellCard.setOnClickListener {
                     if (calendarDay.isCurrentMonth) {
-                        // 클릭 애니메이션
-                        val scaleUp = AnimationUtils.loadAnimation(binding.root.context, R.anim.scale_up)
-                        val scaleDown = AnimationUtils.loadAnimation(binding.root.context, R.anim.scale_down)
-
-                        cellCard.startAnimation(scaleUp)
-                        cellCard.postDelayed({
-                            cellCard.startAnimation(scaleDown)
-                            onDateClick(calendarDay)
-                        }, 150)
+                        // 하드웨어 가속을 활용한 부드러운 애니메이션
+                        cellCard.animate()
+                            .scaleX(1.05f)
+                            .scaleY(1.05f)
+                            .alpha(0.8f)
+                            .setDuration(150)
+                            .withEndAction {
+                                // Scale down animation
+                                cellCard.animate()
+                                    .scaleX(1.0f)
+                                    .scaleY(1.0f)
+                                    .alpha(1.0f)
+                                    .setDuration(150)
+                                    .withEndAction {
+                                        onDateClick(calendarDay)
+                                    }
+                                    .start()
+                            }
+                            .start()
                     }
                 }
             }

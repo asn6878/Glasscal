@@ -48,22 +48,24 @@ class CalendarFragment : Fragment() {
     }
 
     /**
-     * BlurView 설정
+     * BlurView 설정 (성능 최적화: auto-update 비활성화)
      */
     private fun setupBlurView() {
         val decorView = requireActivity().window.decorView as? ViewGroup
         decorView?.let {
             val windowBackground: Drawable? = decorView.background
 
+            // 헤더 BlurView: auto-update 비활성화로 성능 개선
             binding.headerBlurView.setupWith(decorView, RenderScriptBlur(requireContext()))
                 .setFrameClearDrawable(windowBackground)
                 .setBlurRadius(20f)
-                .setBlurAutoUpdate(true)
+                .setBlurAutoUpdate(false)
 
+            // 요일 BlurView: auto-update 비활성화로 성능 개선
             binding.dayOfWeekBlurView.setupWith(decorView, RenderScriptBlur(requireContext()))
                 .setFrameClearDrawable(windowBackground)
                 .setBlurRadius(20f)
-                .setBlurAutoUpdate(true)
+                .setBlurAutoUpdate(false)
         }
     }
 

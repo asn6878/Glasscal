@@ -1,5 +1,6 @@
 package com.example.glasscal.data.api
 
+import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -11,7 +12,7 @@ import java.util.concurrent.TimeUnit
  */
 object RetrofitClient {
 
-    private const val BASE_URL = "http://localhost:8080/"
+    private const val BASE_URL = "http://10.0.2.2:8080/"
 
     private val loggingInterceptor = HttpLoggingInterceptor().apply {
         level = HttpLoggingInterceptor.Level.BODY
@@ -24,10 +25,16 @@ object RetrofitClient {
         .writeTimeout(30, TimeUnit.SECONDS)
         .build()
 
+    // Gson 설정: lenient 모드 및 null 처리
+    private val gson = GsonBuilder()
+        .setLenient()
+        .serializeNulls()
+        .create()
+
     private val retrofit: Retrofit = Retrofit.Builder()
         .baseUrl(BASE_URL)
         .client(okHttpClient)
-        .addConverterFactory(GsonConverterFactory.create())
+        .addConverterFactory(GsonConverterFactory.create(gson))
         .build()
 
     val cloudSyncService: CloudSyncService = retrofit.create(CloudSyncService::class.java)

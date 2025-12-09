@@ -67,9 +67,12 @@ class CloudSyncRepository(context: Context, private val taskRepository: TaskRepo
                     Result.failure(Exception("응답 데이터가 없습니다"))
                 }
             } else {
+                val errorBody = response.errorBody()?.string()
+                android.util.Log.e("CloudSyncRepository", "서버 오류: ${response.code()}, $errorBody")
                 Result.failure(Exception("서버 오류: ${response.code()}"))
             }
         } catch (e: Exception) {
+            android.util.Log.e("CloudSyncRepository", "checkSyncStatus 실패: ${e.message}", e)
             Result.failure(e)
         }
     }
@@ -81,7 +84,7 @@ class CloudSyncRepository(context: Context, private val taskRepository: TaskRepo
         return try {
             val syncId = getOrCreateSyncId()
 
-            // Task를 TaskData로 변환
+            // Task를 TaskData로 변환 (non-null 값으로 안전하게 변환)
             val taskDataList = tasks.map { task ->
                 TaskData(
                     id = task.id,
@@ -107,9 +110,12 @@ class CloudSyncRepository(context: Context, private val taskRepository: TaskRepo
                     Result.failure(Exception(syncResponse?.message ?: "동기화 실패"))
                 }
             } else {
-                Result.failure(Exception("서버 오류: ${response.code()}"))
+                val errorBody = response.errorBody()?.string()
+                android.util.Log.e("CloudSyncRepository", "서버 오류: ${response.code()}, $errorBody")
+                Result.failure(Exception("서버 오류: ${response.code()}, $errorBody"))
             }
         } catch (e: Exception) {
+            android.util.Log.e("CloudSyncRepository", "syncToCloud 실패: ${e.message}", e)
             Result.failure(e)
         }
     }
@@ -123,36 +129,51 @@ class CloudSyncRepository(context: Context, private val taskRepository: TaskRepo
 
             if (response.isSuccessful) {
                 val syncData = response.body()
-                if (syncData != null) {
-                    // TaskData를 Task로 변환
-                    val tasks = syncData.tasks.map { taskData ->
-                        Task(
-                            id = 0, // Room이 자동 생성하도록 0으로 설정
-                            title = taskData.title,
-                            content = taskData.content,
-                            date = taskData.date,
-                            imageUri = taskData.imageUri,
-                            createdAt = taskData.createdAt,
-                            updatedAt = taskData.updatedAt
-                        )
+                if (syncData != null && syncData.tasks != null) {
+                    try {
+                        // TaskData를 Task로 변환
+                        val tasks = syncData.tasks.mapNotNull { taskData ->
+                            try {
+                                Task(
+                                    id = 0, // Room이 자동 생성하도록 0으로 설정
+                                    title = taskData.title ?: "",
+                                    content = taskData.content ?: "",
+                                    date = taskData.date ?: System.currentTimeMillis(),
+                                    imageUri = taskData.imageUri,
+                                    createdAt = taskData.createdAt ?: System.currentTimeMillis(),
+                                    updatedAt = taskData.updatedAt ?: System.currentTimeMillis()
+                                )
+                            } catch (e: Exception) {
+                                // 개별 task 변환 실패 시 null 반환하여 필터링
+                                android.util.Log.e("CloudSyncRepository", "Task 변환 실패: ${e.message}", e)
+                                null
+                            }
+                        }
+
+                        // 로컬 데이터 삭제 후 클라우드 데이터 저장
+                        taskRepository.deleteAllTasks()
+                        if (tasks.isNotEmpty()) {
+                            taskRepository.insertTasks(tasks)
+                        }
+
+                        // 동기화 정보 저장
+                        syncPrefs.saveSyncId(syncId)
+                        syncPrefs.setIsSynced(true)
+
+                        Result.success(tasks)
+                    } catch (e: Exception) {
+                        android.util.Log.e("CloudSyncRepository", "데이터 변환 실패: ${e.message}", e)
+                        Result.failure(Exception("데이터 변환 실패: ${e.message}"))
                     }
-
-                    // 로컬 데이터 삭제 후 클라우드 데이터 저장
-                    taskRepository.deleteAllTasks()
-                    taskRepository.insertTasks(tasks)
-
-                    // 동기화 정보 저장
-                    syncPrefs.saveSyncId(syncId)
-                    syncPrefs.setIsSynced(true)
-
-                    Result.success(tasks)
                 } else {
                     Result.failure(Exception("응답 데이터가 없습니다"))
                 }
             } else {
-                Result.failure(Exception("서버 오류: ${response.code()}"))
+                val errorBody = response.errorBody()?.string()
+                Result.failure(Exception("서버 오류: ${response.code()}, $errorBody"))
             }
         } catch (e: Exception) {
+            android.util.Log.e("CloudSyncRepository", "fetchFromCloud 실패: ${e.message}", e)
             Result.failure(e)
         }
     }
@@ -167,10 +188,16 @@ class CloudSyncRepository(context: Context, private val taskRepository: TaskRepo
 
             // 클라우드 데이터 삭제 (동기화 ID가 있는 경우)
             if (syncId != null) {
-                val response = apiService.deleteCloudData(syncId)
-                if (!response.isSuccessful) {
-                    // 클라우드 삭제 실패 시 에러 반환
-                    return Result.failure(Exception("클라우드 데이터 삭제 실패: ${response.code()}"))
+                try {
+                    val response = apiService.deleteCloudData(syncId)
+                    if (!response.isSuccessful) {
+                        val errorBody = response.errorBody()?.string()
+                        android.util.Log.e("CloudSyncRepository", "클라우드 삭제 실패: ${response.code()}, $errorBody")
+                        // 클라우드 삭제 실패해도 로컬은 삭제 계속 진행
+                    }
+                } catch (e: Exception) {
+                    android.util.Log.e("CloudSyncRepository", "클라우드 삭제 API 호출 실패: ${e.message}", e)
+                    // 클라우드 삭제 실패해도 로컬은 삭제 계속 진행
                 }
             }
 
@@ -182,6 +209,7 @@ class CloudSyncRepository(context: Context, private val taskRepository: TaskRepo
 
             Result.success(Unit)
         } catch (e: Exception) {
+            android.util.Log.e("CloudSyncRepository", "deleteAllData 실패: ${e.message}", e)
             Result.failure(e)
         }
     }

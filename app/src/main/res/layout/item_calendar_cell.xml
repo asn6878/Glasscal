@@ -27,9 +27,9 @@
             tools:visibility="visible"
             tools:src="@android:drawable/ic_menu_gallery" />
 
-        <!-- Glassmorphism Background with Blur -->
-        <eightbitlab.com.blurview.BlurView
-            android:id="@+id/blurView"
+        <!-- Glassmorphism Background (Static) -->
+        <View
+            android:id="@+id/glassBackground"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/bg_calendar_cell" />

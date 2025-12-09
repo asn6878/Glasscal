@@ -15,25 +15,25 @@ data class SyncData(
  */
 data class TaskData(
     @SerializedName("id")
-    val id: Long,
+    val id: Long?,
 
     @SerializedName("title")
-    val title: String,
+    val title: String?,
 
     @SerializedName("content")
-    val content: String,
+    val content: String?,
 
     @SerializedName("date")
-    val date: Long,
+    val date: Long?,
 
     @SerializedName("imageUri")
     val imageUri: String?,
 
     @SerializedName("createdAt")
-    val createdAt: Long,
+    val createdAt: Long?,
 
     @SerializedName("updatedAt")
-    val updatedAt: Long
+    val updatedAt: Long?
 )
 
 /**

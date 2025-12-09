@@ -198,11 +198,9 @@ class AddTaskBottomSheet : BottomSheetDialogFragment() {
                 requireContext(),
                 permission
             ) == PackageManager.PERMISSION_GRANTED -> {
-                // 권한이 이미 승인된 경우
                 openImagePicker()
             }
             shouldShowRequestPermissionRationale(permission) -> {
-                // 권한 설명이 필요한 경우
                 Snackbar.make(
                     binding.root,
                     "할일에 이미지를 추가하려면 저장소 접근 권한이 필요합니다.",
