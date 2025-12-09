@@ -224,7 +224,7 @@ class SettingsFragment : Fragment() {
     private fun showClearDataDialog() {
         MaterialAlertDialogBuilder(requireContext())
             .setTitle("모든 데이터 삭제")
-            .setMessage("정말로 모든 데이터를 삭제하시겠습니까?\n로컬 데이터와 동기화 정보가 모두 삭제됩니다.\n이 작업은 되돌릴 수 없습니다.")
+            .setMessage("로컬 및 클라우드에 저장된 모든 데이터가 삭제됩니다. 확실하십니까?\n\n삭제되는 항목:\n• 로컬에 저장된 모든 할일\n• 클라우드에 동기화된 모든 데이터\n• 동기화 정보\n\n이 작업은 되돌릴 수 없습니다.")
             .setPositiveButton("삭제") { dialog, _ ->
                 clearAllData()
                 dialog.dismiss()

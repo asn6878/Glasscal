@@ -30,7 +30,7 @@
     <!-- Background Gradient Colors -->
     <color name="gradient_start">#E3F2FD</color> <!-- Light blue -->
     <color name="gradient_middle">#F3E5F5</color> <!-- Light purple -->
-    <color name="gradient_end">#FFF3E0</color> <!-- Light orange -->
+    <color name="gradient_end">#E8EAF6</color> <!-- Light indigo - 자연스러운 밝은색 -->
 
     <!-- Text Colors -->
     <color name="text_primary">#212121</color>

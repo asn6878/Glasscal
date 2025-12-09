@@ -90,14 +90,19 @@
 
         </LinearLayout>
 
-        <!-- Today Indicator -->
-        <View
+        <!-- Today Indicator (Ring around the cell) -->
+        <FrameLayout
             android:id="@+id/todayIndicator"
             android:layout_width="match_parent"
-            android:layout_height="3dp"
-            android:layout_gravity="bottom"
-            android:background="@color/calendar_today"
-            android:visibility="gone" />
+            android:layout_height="match_parent"
+            android:padding="2dp"
+            android:visibility="gone">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/bg_today_indicator" />
+        </FrameLayout>
 
     </FrameLayout>
 

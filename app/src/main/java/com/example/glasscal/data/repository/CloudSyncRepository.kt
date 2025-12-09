@@ -162,14 +162,23 @@ class CloudSyncRepository(context: Context, private val taskRepository: TaskRepo
      */
     suspend fun deleteAllData(): Result<Unit> {
         return try {
+            // 동기화 ID 가져오기
+            val syncId = getSyncId()
+
+            // 클라우드 데이터 삭제 (동기화 ID가 있는 경우)
+            if (syncId != null) {
+                val response = apiService.deleteCloudData(syncId)
+                if (!response.isSuccessful) {
+                    // 클라우드 삭제 실패 시 에러 반환
+                    return Result.failure(Exception("클라우드 데이터 삭제 실패: ${response.code()}"))
+                }
+            }
+
             // 로컬 데이터 삭제
             taskRepository.deleteAllTasks()
 
             // 동기화 정보 삭제
             syncPrefs.clearAll()
-
-            // TODO: 클라우드 데이터 삭제 API가 추가되면 구현
-            // 현재는 로컬 데이터와 동기화 정보만 삭제
 
             Result.success(Unit)
         } catch (e: Exception) {

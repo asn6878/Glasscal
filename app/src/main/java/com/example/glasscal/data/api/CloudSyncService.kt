@@ -5,6 +5,7 @@ import com.example.glasscal.data.model.SyncResponse
 import com.example.glasscal.data.model.SyncStatusResponse
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
@@ -37,4 +38,11 @@ interface CloudSyncService {
         @Path("id") id: String,
         @Body data: SyncData
     ): Response<SyncResponse>
+
+    /**
+     * 클라우드 데이터 삭제
+     * DELETE {id}
+     */
+    @DELETE("{id}")
+    suspend fun deleteCloudData(@Path("id") id: String): Response<SyncResponse>
 }
